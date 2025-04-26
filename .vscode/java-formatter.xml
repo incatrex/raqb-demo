@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<profiles version="13">
+    <profile kind="CodeFormatterProfile" name="CustomProfile" version="13">
+        <setting id="org.eclipse.jdt.core.formatter.indent_size" value="4"/>
+        <!-- Add more formatting rules -->
+    </profile>
+</profiles>

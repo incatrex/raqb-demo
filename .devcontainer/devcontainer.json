@@ -1,0 +1,45 @@
+{
+    "name": "Java & React Development",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "devcontainer",
+    "workspaceFolder": "/workspace",
+    
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "vscjava.vscode-java-pack",
+                "vmware.vscode-spring-boot",
+                "redhat.java",
+                "vscjava.vscode-lombok",
+                "dbaeumer.vscode-eslint",
+                "dsznajder.es7-react-js-snippets",
+                "esbenp.prettier-vscode"
+            ],
+            "settings": {
+                "java.configuration.updateBuildConfiguration": "automatic",
+                "java.server.launchMode": "Standard"
+            }
+        }
+    },
+
+    "remoteUser": "vscode",
+
+    "postCreateCommand": "./.devcontainer/postCreateCommands.sh",
+
+    "mounts": [
+        "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached"
+    ],
+    
+    "features": {
+        "ghcr.io/devcontainers/features/java:1": {
+            "version": "17",
+            "installMaven": true
+        },
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "lts"
+        },
+        "ghcr.io/devcontainers/features/git:1": {
+            "version": "latest"
+        }
+    }
+}
