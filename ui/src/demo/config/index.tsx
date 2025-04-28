@@ -764,20 +764,25 @@ export default (skin: string) => {
       label: "String",
       tooltip: "String functions",
       subfields: {
-        MID: merge({},{
+        MID: {
           args: {
             str: {
-              type: "string"
+              label: "String",
+              type: "text",
+              valueSources: ["value"]
             },
             start: {
-              type: "number"
+              label: "Start",
+              type: "number",
+              valueSources: ["value"]
             },
-            end: {
-              type: "number"
+            len: {
+              type: "Len",
+              valueSources: ["value"]
             }
           },
           returnType: "string"
-        }),
+        },
 
         // LOWER: max length - 7
         // UPPER: max length - 6
