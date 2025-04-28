@@ -1,0 +1,1 @@
+python json_validator.py --source_path "test.json" --schema_path raqb-schema.json --log_file validation.log
