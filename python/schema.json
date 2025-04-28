@@ -1,0 +1,225 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Query Builder Tree to SQL Expression",
+  "description": "Schema for validating tree JSON produced by react-awesome-query-builder with SQL generation in mind",
+  "$ref": "#/$defs/queryNode",
+  "$defs": {
+    "queryNode": {
+      "type": "object",
+      "required": ["id", "type"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the node"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["group", "rule"],
+          "description": "Type of the node: either a group or a rule"
+        }
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/groupNode"
+        },
+        {
+          "$ref": "#/$defs/ruleNode"
+        }
+      ]
+    },
+    "groupNode": {
+      "type": "object",
+      "required": ["type", "properties", "children1"],
+      "properties": {
+        "type": {
+          "const": "group"
+        },
+        "properties": {
+          "type": "object",
+          "required": ["conjunction"],
+          "properties": {
+            "conjunction": {
+              "type": "string",
+              "enum": ["AND", "OR"],
+              "description": "Logical operator for combining child rules"
+            },
+            "not": {
+              "type": "boolean",
+              "description": "Whether to negate the entire group"
+            }
+          }
+        },
+        "children1": {
+          "type": "array",
+          "description": "Child nodes for group type",
+          "items": {
+            "$ref": "#/$defs/queryNode"
+          }
+        }
+      }
+    },
+    "ruleNode": {
+      "type": "object",
+      "required": ["type", "properties"],
+      "properties": {
+        "type": {
+          "const": "rule"
+        },
+        "properties": {
+          "type": "object",
+          "required": ["field", "operator", "value"],
+          "properties": {
+            "field": {
+              "type": "string",
+              "description": "Field/column name to apply the operator on"
+            },
+            "operator": {
+              "type": "string",
+              "description": "Comparison operator",
+              "enum": [
+                "equal",
+                "not_equal",
+                "less",
+                "less_or_equal",
+                "greater",
+                "greater_or_equal",
+                "like",
+                "not_like",
+                "starts_with",
+                "ends_with",
+                "between",
+                "not_between",
+                "is_null",
+                "is_not_null",
+                "is_empty",
+                "is_not_empty",
+                "in",
+                "not_in",
+                "select_equals",
+                "select_not_equals",
+                "select_any_in",
+                "select_not_any_in",
+                "multiselect_equals",
+                "multiselect_not_equals",
+                "proximity"
+              ]
+            },
+            "value": {
+              "description": "Value or values to compare against",
+              "oneOf": [
+                { "type": "string" },
+                { "type": "number" },
+                { "type": "boolean" },
+                { 
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      { "type": "string" },
+                      { "type": "number" },
+                      { "type": "boolean" },
+                      { "type": "null" },
+                      { "type": "object" }
+                    ]
+                  }
+                },
+                { "type": "null" },
+                { "type": "object" }
+              ]
+            },
+            "valueType": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "description": "Type of the value",
+                  "enum": ["string", "number", "boolean", "date", "time", "datetime", "select", "multiselect", "treeselect", "treemultiselect", "case_value"]
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": ["string", "number", "boolean", "date", "time", "datetime", "select", "multiselect", "treeselect", "treemultiselect", "case_value"]
+                  },
+                  "description": "Types of multiple values"
+                }
+              ]
+            },
+            "valueSrc": {
+              "oneOf": [
+                { 
+                  "type": "string",
+                  "enum": ["value", "field", "func"],
+                  "description": "Source of the value" 
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": ["value", "field", "func"]
+                  },
+                  "description": "Sources of multiple values"
+                }
+              ]
+            },
+            "valueError": {
+              "type": ["string", "array", "null"],
+              "description": "Error message if value is invalid"
+            },
+            "operatorOptions": {
+              "type": "object",
+              "description": "Options specific to the operator"
+            },
+            "fieldSrc": {
+              "type": "string",
+              "description": "Source of the field"
+            }
+          }
+        }
+      },
+      "not": {
+        "required": ["children1"]
+      }
+    },
+    "sqlOperatorMapping": {
+      "description": "Mapping from query builder operators to SQL operators",
+      "type": "object",
+      "properties": {
+        "equal": { "const": "=" },
+        "not_equal": { "const": "!=" },
+        "less": { "const": "<" },
+        "less_or_equal": { "const": "<=" },
+        "greater": { "const": ">" },
+        "greater_or_equal": { "const": ">=" },
+        "like": { "const": "LIKE" },
+        "not_like": { "const": "NOT LIKE" },
+        "starts_with": { "const": "LIKE" },
+        "ends_with": { "const": "LIKE" },
+        "between": { "const": "BETWEEN" },
+        "not_between": { "const": "NOT BETWEEN" },
+        "is_null": { "const": "IS NULL" },
+        "is_not_null": { "const": "IS NOT NULL" },
+        "is_empty": { "const": "= ''" },
+        "is_not_empty": { "const": "!= ''" },
+        "in": { "const": "IN" },
+        "not_in": { "const": "NOT IN" },
+        "AND": { "const": "AND" },
+        "OR": { "const": "OR" }
+      }
+    },
+    "sqlDataTypeMapping": {
+      "description": "Mapping from query builder value types to SQL data types",
+      "type": "object",
+      "properties": {
+        "string": { "const": "string" },
+        "number": { "const": "number" },
+        "boolean": { "const": "boolean" },
+        "date": { "const": "date" },
+        "time": { "const": "string" },
+        "datetime": { "const": "date" },
+        "select": { "const": "string" },
+        "multiselect": { "const": "string" },
+        "treeselect": { "const": "string" },
+        "treemultiselect": { "const": "string" }
+      }
+    }
+  }
+}
