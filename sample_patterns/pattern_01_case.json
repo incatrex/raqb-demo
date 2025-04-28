@@ -1,0 +1,211 @@
+// Pattern 1 (assuming "," represents logical OR) - assuming report lines are numeric
+IF ((A=0,B=0,C=0,D=0),TRUE,FALSE) 
+
+// SpEL
+(REPORT_1.SCHEDULE_A.LINE_100A == 0 ? 'LINE_100A is Zero' : (REPORT_1.SCHEDULE_A.LINE_100B == 0 ? 'LINE_100B is Zero' : (REPORT_1.SCHEDULE_B.LINE_100C == 0 ? 'LINE_100C is Zero' : (REPORT_1.SCHEDULE_B.LINE_100D == 0 ? 'LINE_100D is Zero' : 'No Errors'))))
+
+// SQL - not generated
+
+// JSON
+{
+  "type": "switch_group",
+  "id": "a99b889b-89ab-4cde-b012-319678dd4d77",
+  "children1": [
+    {
+      "type": "case_group",
+      "id": "bba9b99b-89ab-4cde-b012-319678dd4d77",
+      "children1": [
+        {
+          "type": "rule",
+          "id": "9988ab99-cdef-4012-b456-719678dd4d77",
+          "properties": {
+            "field": "REPORT_1.SCHEDULE_A.LINE_100A",
+            "fieldSrc": "field",
+            "operator": "equal",
+            "value": [
+              0
+            ],
+            "valueSrc": [
+              "value"
+            ],
+            "valueType": [
+              "number"
+            ],
+            "valueError": [
+              null
+            ]
+          }
+        }
+      ],
+      "properties": {
+        "conjunction": "AND",
+        "not": false,
+        "value": [
+          "LINE_100A is Zero"
+        ],
+        "valueSrc": [
+          "value"
+        ],
+        "valueType": [
+          "case_value"
+        ],
+        "field": "!case_value",
+        "valueError": [
+          null
+        ]
+      }
+    },
+    {
+      "type": "case_group",
+      "id": "8aa99888-0123-4456-b89a-b19678dd4d77",
+      "children1": [
+        {
+          "type": "rule",
+          "id": "bbb8b8bb-4567-489a-bcde-f19678dd4d77",
+          "properties": {
+            "field": "REPORT_1.SCHEDULE_A.LINE_100B",
+            "fieldSrc": "field",
+            "operator": "equal",
+            "value": [
+              0
+            ],
+            "valueSrc": [
+              "value"
+            ],
+            "valueType": [
+              "number"
+            ],
+            "valueError": [
+              null
+            ]
+          }
+        }
+      ],
+      "properties": {
+        "conjunction": "AND",
+        "not": false,
+        "value": [
+          "LINE_100B is Zero"
+        ],
+        "valueSrc": [
+          "value"
+        ],
+        "valueType": [
+          "case_value"
+        ],
+        "field": "!case_value",
+        "valueError": [
+          null
+        ]
+      }
+    },
+    {
+      "type": "case_group",
+      "id": "89bbaaaa-89ab-4cde-b012-319678dd4d77",
+      "children1": [
+        {
+          "type": "rule",
+          "id": "8aa98988-cdef-4012-b456-719678dd4d77",
+          "properties": {
+            "field": "REPORT_1.SCHEDULE_B.LINE_100C",
+            "fieldSrc": "field",
+            "operator": "equal",
+            "value": [
+              0
+            ],
+            "valueSrc": [
+              "value"
+            ],
+            "valueType": [
+              "number"
+            ],
+            "valueError": [
+              null
+            ]
+          }
+        }
+      ],
+      "properties": {
+        "conjunction": "AND",
+        "not": false,
+        "value": [
+          "LINE_100C is Zero"
+        ],
+        "valueSrc": [
+          "value"
+        ],
+        "valueType": [
+          "case_value"
+        ],
+        "field": "!case_value",
+        "valueError": [
+          null
+        ]
+      }
+    },
+    {
+      "type": "case_group",
+      "id": "99bba999-0123-4456-b89a-b19678dd4d77",
+      "children1": [
+        {
+          "type": "rule",
+          "id": "8a89a988-4567-489a-bcde-f19678dd4d77",
+          "properties": {
+            "field": "REPORT_1.SCHEDULE_B.LINE_100D",
+            "fieldSrc": "field",
+            "operator": "equal",
+            "value": [
+              0
+            ],
+            "valueSrc": [
+              "value"
+            ],
+            "valueType": [
+              "number"
+            ],
+            "valueError": [
+              null
+            ]
+          }
+        }
+      ],
+      "properties": {
+        "conjunction": "AND",
+        "not": false,
+        "value": [
+          "LINE_100D is Zero"
+        ],
+        "valueSrc": [
+          "value"
+        ],
+        "valueType": [
+          "case_value"
+        ],
+        "field": "!case_value",
+        "valueError": [
+          null
+        ]
+      }
+    },
+    {
+      "id": "98bb8bab-cdef-4012-b456-719678dd4d77",
+      "type": "case_group",
+      "properties": {
+        "value": [
+          "No Errors"
+        ],
+        "valueSrc": [
+          "value"
+        ],
+        "valueType": [
+          "case_value"
+        ],
+        "field": "!case_value",
+        "valueError": [
+          null
+        ]
+      }
+    }
+  ],
+  "properties": {}
+}
