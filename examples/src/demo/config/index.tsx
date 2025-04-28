@@ -330,6 +330,66 @@ export default (skin: string) => {
   //////////////////////////////////////////////////////////////////////
 
   const fields: Fields = {
+    
+    REPORT_1: {
+      label: "REPORT_1",
+      tooltip: "Group of fields",
+      type: "!struct",
+      subfields: {
+        SCHEDULE_A: {
+          type: "!struct",
+          subfields: {
+            LINE_100A: {
+              type: "number"
+            },
+            LINE_100B: {
+              type: "number"
+            }
+          }
+        },
+        SCHEDULE_B: {
+          type: "!struct",
+          subfields: {
+            LINE_100C: {
+              type: "number"
+            },
+            LINE_100D: {
+              type: "number"
+            }
+          }
+        },
+      }
+    },
+    REPORT_2: {
+      label: "REPORT_2",
+      tooltip: "Group of fields",
+      type: "!struct",
+      subfields: {
+        SCHEDULE_C: {
+          type: "!struct",
+          subfields: {
+            LINE_200A: {
+              type: "number"
+            },
+            LINE_200B: {
+              type: "number"
+            }
+          }
+        },
+        SCHEDULE_D: {
+          type: "!struct",
+          subfields: {
+            LINE_200C: {
+              type: "number"
+            },
+            LINE_200D: {
+              type: "number"
+            }
+          }
+        },
+      }
+    },
+
     user: {
       label: "User",
       tooltip: "Group of fields",
@@ -698,11 +758,27 @@ export default (skin: string) => {
 
   const funcs: Funcs = {
     //...BasicFuncs
+
     string: {
       type: "!struct",
       label: "String",
       tooltip: "String functions",
       subfields: {
+        MID: merge({},{
+          args: {
+            str: {
+              type: "string"
+            },
+            start: {
+              type: "number"
+            },
+            end: {
+              type: "number"
+            }
+          },
+          returnType: "string"
+        }),
+
         // LOWER: max length - 7
         // UPPER: max length - 6
         LOWER: merge({}, BasicFuncs.LOWER, {
