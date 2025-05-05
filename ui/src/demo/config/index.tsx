@@ -3,7 +3,7 @@ import merge from "lodash/merge";
 import {
   BasicFuncs, Utils, BasicConfig,
   // types:
-  Operators, Fields, Func, Types, Conjunctions, LocaleSettings, OperatorProximity, Funcs, DateTimeWidget, FuncWidget, SelectWidget, 
+  Operators, Fields, Func, Types, Conjunctions, LocaleSettings, Funcs, DateTimeWidget, FuncWidget, SelectWidget, 
   Settings,
   DateTimeFieldSettings, TextFieldSettings, SelectFieldSettings, MultiSelectFieldSettings, NumberFieldSettings,
   TextWidgetProps,
@@ -55,45 +55,18 @@ export default (skin: string) => {
     ...InitialConfig.conjunctions,
   };
 
-  const proximity: OperatorProximity = {
-    ...InitialConfig.operators.proximity,
-    valueLabels: [
-      { label: "Word 1", placeholder: "Enter first word" },
-      { label: "Word 2", placeholder: "Enter second word" },
-    ],
-    textSeparators: [
-      //'Word 1',
-      //'Word 2'
-    ],
-    options: {
-      ...InitialConfig.operators.proximity.options,
-      optionLabel: "Near", // label on top of "near" selectbox (for config.settings.showLabels==true)
-      optionTextBefore: "Near", // label before "near" selectbox (for config.settings.showLabels==false)
-      optionPlaceholder: "Select words between", // placeholder for "near" selectbox
-      minProximity: 2,
-      maxProximity: 10,
-      defaults: {
-        proximity: 2
-      },
-      customProps: {}
-    }
-  };
-
-  const operators: Operators = {
+  const operators: Operators = 
+  {
     ...InitialConfig.operators,
-    // examples of  overriding
-    proximity,
-    between: {
-      ...InitialConfig.operators.between,
-      valueLabels: [
-        "Value from",
-        "Value to"
-      ],
-      textSeparators: [
-        "from",
-        "to"
-      ],
-    },
+    plus: {
+      label: '+',
+      labelForFormat: '+',
+      valueSources: ['value', 'field'],
+      cardinality: 1,
+      formatOp: (field, op, value) => `(${field} + ${value})`,
+      sqlFormatOp: (field, op, value) => `(${field} + ${value[0]})`,
+      mongoFormatOp: (field, op, value) => ({ $add: [field, value[0]] }),
+    }
   };
 
 
@@ -157,31 +130,15 @@ export default (skin: string) => {
   };
 
 
-  const types: Types = {
+  const types = {
     ...InitialConfig.types,
-    // examples of  overriding
-    text: {
-      ...InitialConfig.types.text,
-      excludeOperators: ["proximity"],
-    },
-    boolean: merge({}, InitialConfig.types.boolean, {
-      widgets: {
-        boolean: {
-          widgetProps: {
-            hideOperator: true,
-            operatorInlineLabel: "is"
-          },
-          opProps: {
-            equal: {
-              label: "is"
-            },
-            not_equal: {
-              label: "is not"
-            }
-          }
-        },
-      },
-    }),
+    number: {
+      ...InitialConfig.types.number,
+      operators: [
+        ...(InitialConfig.types.number.operators || []),
+        'plus',
+      ]
+    }
   };
 
 
@@ -331,522 +288,279 @@ export default (skin: string) => {
 
   const fields: Fields = {
     
-    REPORT_1: {
-      label: "REPORT_1",
-      tooltip: "Group of fields",
+    // Define the table structure with field groups
+    "TABLE1": {
       type: "!struct",
+      label: "TABLE1",
       subfields: {
-        SCHEDULE_A: {
-          type: "!struct",
-          subfields: {
-            LINE_100A: {
-              type: "number"
-            },
-            LINE_100B: {
-              type: "number"
-            }
-          }
-        },
-        SCHEDULE_B: {
-          type: "!struct",
-          subfields: {
-            LINE_100C: {
-              type: "number"
-            },
-            LINE_100D: {
-              type: "number"
-            }
-          }
-        },
-      }
-    },
-    REPORT_2: {
-      label: "REPORT_2",
-      tooltip: "Group of fields",
-      type: "!struct",
-      subfields: {
-        SCHEDULE_C: {
-          type: "!struct",
-          subfields: {
-            LINE_200A: {
-              type: "number"
-            },
-            LINE_200B: {
-              type: "number"
-            }
-          }
-        },
-        SCHEDULE_D: {
-          type: "!struct",
-          subfields: {
-            LINE_200C: {
-              type: "number"
-            },
-            LINE_200D: {
-              type: "number"
-            }
-          }
-        },
-      }
-    },
-
-    user: {
-      label: "User",
-      tooltip: "Group of fields",
-      type: "!struct",
-      subfields: {
-        firstName: {
-          label2: "Username", //only for menu's toggler
-          type: "text",
-          fieldSettings: {
-            validateValue: (val, fieldSettings) => {
-              return (val.length < 10);
-            },
-          } as TextFieldSettings,
-          mainWidgetProps: {
-            valueLabel: "Name",
-            valuePlaceholder: "Enter name",
-          },
-        },
-        login: {
-          type: "text",
-          tableName: "t1", // legacy: PR #18, PR #20
-          fieldSettings: {
-            validateValue: (val, fieldSettings) => {
-              return (val.length < 10 && (val === "" || val.match(/^[A-Za-z0-9_-]+$/) !== null));
-            },
-          } as TextFieldSettings,
-          mainWidgetProps: {
-            valueLabel: "Login",
-            valuePlaceholder: "Enter login",
-          },
-        }
-      }
-    },
-    bio: {
-      label: "Bio",
-      type: "text",
-      preferWidgets: ["textarea"],
-      fieldSettings: {
-        maxLength: 1000,
-      }
-    },
-    results: {
-      label: "Results",
-      type: "!group",
-      subfields: {
-        product: {
-          type: "select",
-          fieldSettings: {
-            listValues: ["abc", "def", "xyz"],
-          } as SelectFieldSettings,
-          valueSources: ["value"],
-        },
-        score: {
+        // Number fields
+        "NUMBER_FIELD_01": {
+          label: "NUMBER_FIELD_01",
           type: "number",
-          fieldSettings: {
-            min: 0,
-            max: 100,
-          },
-          valueSources: ["value"],
-        }
-      }
-    },
-    cars: {
-      label: "Cars",
-      type: "!group",
-      mode: "array",
-      conjunctions: ["AND", "OR"],
-      showNot: true,
-      operators: [
-        // w/ operand - count
-        "equal",
-        "not_equal",
-        "less",
-        "less_or_equal",
-        "greater",
-        "greater_or_equal",
-        "between",
-        "not_between",
-
-        // w/o operand
-        "some",
-        "all",
-        "none",
-      ],
-      defaultOperator: "some",
-      //defaultField: "year",
-      initialEmptyWhere: true, // if default operator is not in config.settings.groupOperators, true - to set no children, false - to add 1 empty
-
-      fieldSettings: {
-        validateValue: (val: number) => {
-          return (val < 10 ? null : {error: "Too many cars, see validateValue()", fixedValue: 9});
+          valueSources: ["value", "field", "func"],
         },
-      },
-
-      subfields: {
-        vendor: {
-          type: "select",
-          fieldSettings: {
-            listValues: ["Ford", "Toyota", "Tesla"],
-          } as MultiSelectFieldSettings,
-          valueSources: ["value"],
-        },
-        year: {
+        "NUMBER_FIELD_02": {
+          label: "NUMBER_FIELD_02",
           type: "number",
-          fieldSettings: {
-            min: 1990,
-            max: 2021,
-          },
-          valueSources: ["value"],
+          valueSources: ["value", "field", "func"],
         },
-        model: {
+        "NUMBER_FIELD_03": {
+          label: "NUMBER_FIELD_03",
+          type: "number",
+          valueSources: ["value", "field", "func"],
+        },
+        
+        // Text fields
+        "TEXT_FIELD_01": {
+          label: "TEXT_FIELD_01",
           type: "text",
-          valueSources: ["value"],
+          valueSources: ["value", "field", "func"],
         },
-      }
-    },
-    prox1: {
-      label: "prox",
-      tooltip: "Proximity search",
-      type: "text",
-      operators: ["proximity"],
-    },
-    num: {
-      label: "Number",
-      type: "number",
-      preferWidgets: ["number"],
-      fieldSettings: {
-        min: -1,
-        max: 5
-      },
-      funcs: ["number.LINEAR_REGRESSION"],
-    },
-    slider: {
-      label: "Slider",
-      type: "number",
-      preferWidgets: ["slider", "rangeslider"],
-      valueSources: ["value", "field"],
-      fieldSettings: {
-        min: 0,
-        max: 100,
-        step: 1,
-        marks: {
-          0: <strong>0%</strong>,
-          100: <strong>100%</strong>
+        "TEXT_FIELD_02": {
+          label: "TEXT_FIELD_02",
+          type: "text",
+          valueSources: ["value", "field", "func"],
         },
-        validateValue: ((val, fieldSettings) => {
-          const ret: ReturnType<ValidateValue> = (val < 50 ? null : {
-            // error: "Invalid slider value, see validateValue()",
-            error: {key: "custom:INVALID_SLIDER_VALUE", args: {val}},
-            fixedValue: 49
-          });
-          return ret;
-        }),
-      } as NumberFieldSettings,
-      //overrides
-      widgets: {
-        slider: {
-          widgetProps: {
-            valuePlaceholder: "..Slider",
-          }
+        "TEXT_FIELD_03": {
+          label: "TEXT_FIELD_03",
+          type: "text",
+          valueSources: ["value", "field", "func"],
         },
-        rangeslider: {
-          widgetProps: {
-            valueLabels: [
-              { label: "Number from", placeholder: "from" },
-              { label: "Number to", placeholder: "to" },
-            ],
-          }
+        
+        // Date fields
+        "DATE_FIELD_01": {
+          label: "DATE_FIELD_01",
+          type: "date",
+          valueSources: ["value", "field", "func"],
         },
-      },
-    },
-    date: {
-      label: "Date",
-      type: "date",
-      valueSources: ["value"],
-      fieldSettings: {
-        dateFormat: "DD-MM-YYYY",
-        validateValue: (val, fieldSettings: DateTimeFieldSettings) => {
-          // example of date validation
-          const dateVal = moment(val, fieldSettings.valueFormat);
-          return dateVal.year() != (new Date().getFullYear()) ? "Please use current year" : null;
+        "DATE_FIELD_02": {
+          label: "DATE_FIELD_02",
+          type: "date",
+          valueSources: ["value", "field", "func"],
         },
-      } as DateTimeFieldSettings,
-    },
-    time: {
-      label: "Time",
-      type: "time",
-      valueSources: ["value"],
-      defaultOperator: "between",
-    },
-    datetime: {
-      label: "DateTime",
-      type: "datetime",
-      valueSources: ["value", "func"]
-    },
-    datetime2: {
-      label: "DateTime2",
-      type: "datetime",
-      valueSources: ["field"]
-    },
-    color: {
-      label: "Color",
-      type: "select",
-      valueSources: ["value"],
-      widgets: {
-        select: {
-          widgetProps: {
-            valuePlaceholder: "Select color",
-            searchPlaceholder: "Search color",
-          },
+        "DATE_FIELD_03": {
+          label: "DATE_FIELD_03",
+          type: "date",
+          valueSources: ["value", "field", "func"],
         },
-        multiselect: {
-          widgetProps: {
-            valuePlaceholder: "Select colors",
-            searchPlaceholder: "Search colors",
-          },
+        
+        // Datetime fields
+        "DATETIME_FIELD_01": {
+          label: "DATETIME_FIELD_01",
+          type: "datetime",
+          valueSources: ["value", "field", "func"],
+        },
+        "DATETIME_FIELD_02": {
+          label: "DATETIME_FIELD_02",
+          type: "datetime",
+          valueSources: ["value", "field", "func"],
+        },
+        "DATETIME_FIELD_03": {
+          label: "DATETIME_FIELD_03",
+          type: "datetime",
+          valueSources: ["value", "field", "func"],
+        },
+        
+        // Boolean fields
+        "BOOLEAN_FIELD_01": {
+          label: "BOOLEAN_FIELD_01",
+          type: "boolean",
+          valueSources: ["value", "field", "func"],
+        },
+        "BOOLEAN_FIELD_02": {
+          label: "BOOLEAN_FIELD_02",
+          type: "boolean",
+          valueSources: ["value", "field", "func"],
+        },
+        "BOOLEAN_FIELD_03": {
+          label: "BOOLEAN_FIELD_03",
+          type: "boolean",
+          valueSources: ["value", "field", "func"],
         },
       },
-      fieldSettings: {
-        showSearch: true,
+    },
 
-        // * old format:
-        // listValues: {
-        //     yellow: 'Yellow',
-        //     green: 'Green',
-        //     orange: 'Orange'
-        // },
-        // * new format:
-        listValues: [
-          { value: "yellow", title: "Yellow" },
-          { value: "green", title: "Green" },
-          { value: "orange", title: "Orange" }
-        ],
-      },
-    },
-    color2: {
-      label: "Color2",
-      type: "select",
-      fieldSettings: {
-        listValues: {
-          yellow: "Yellow",
-          green: "Green",
-          orange: "Orange",
-          purple: "Purple"
+    "TABLE2": {
+      type: "!struct",
+      label: "TABLE2",
+      subfields: {
+        // Number fields
+        "NUMBER_FIELD_01": {
+          label: "NUMBER_FIELD_01",
+          type: "number",
+          valueSources: ["value", "field", "func"],
         },
-      }
-    },
-    multicolor: {
-      label: "Colors",
-      type: "multiselect",
-      fieldSettings: {
-        showSearch: true,
-        listValues: {
-          yellow: "Yellow",
-          green: "Green",
-          orange: "Orange"
+        "NUMBER_FIELD_02": {
+          label: "NUMBER_FIELD_02",
+          type: "number",
+          valueSources: ["value", "field", "func"],
         },
-        allowCustomValues: true,
+        "NUMBER_FIELD_03": {
+          label: "NUMBER_FIELD_03",
+          type: "number",
+          valueSources: ["value", "field", "func"],
+        },
+        
+        // Text fields
+        "TEXT_FIELD_01": {
+          label: "TEXT_FIELD_01",
+          type: "text",
+          valueSources: ["value", "field", "func"],
+        },
+        "TEXT_FIELD_02": {
+          label: "TEXT_FIELD_02",
+          type: "text",
+          valueSources: ["value", "field", "func"],
+        },
+        "TEXT_FIELD_03": {
+          label: "TEXT_FIELD_03",
+          type: "text",
+          valueSources: ["value", "field", "func"],
+        },
+        
+        // Date fields
+        "DATE_FIELD_01": {
+          label: "DATE_FIELD_01",
+          type: "date",
+          valueSources: ["value", "field", "func"],
+        },
+        "DATE_FIELD_02": {
+          label: "DATE_FIELD_02",
+          type: "date",
+          valueSources: ["value", "field", "func"],
+        },
+        "DATE_FIELD_03": {
+          label: "DATE_FIELD_03",
+          type: "date",
+          valueSources: ["value", "field", "func"],
+        },
+        
+        // Datetime fields
+        "DATETIME_FIELD_01": {
+          label: "DATETIME_FIELD_01",
+          type: "datetime",
+          valueSources: ["value", "field", "func"],
+        },
+        "DATETIME_FIELD_02": {
+          label: "DATETIME_FIELD_02",
+          type: "datetime",
+          valueSources: ["value", "field", "func"],
+        },
+        "DATETIME_FIELD_03": {
+          label: "DATETIME_FIELD_03",
+          type: "datetime",
+          valueSources: ["value", "field", "func"],
+        },
+        
+        // Boolean fields
+        "BOOLEAN_FIELD_01": {
+          label: "BOOLEAN_FIELD_01",
+          type: "boolean",
+          valueSources: ["value", "field", "func"],
+        },
+        "BOOLEAN_FIELD_02": {
+          label: "BOOLEAN_FIELD_02",
+          type: "boolean",
+          valueSources: ["value", "field", "func"],
+        },
+        "BOOLEAN_FIELD_03": {
+          label: "BOOLEAN_FIELD_03",
+          type: "boolean",
+          valueSources: ["value", "field", "func"],
+        },
       },
-      mainWidgetProps: {
-        customProps: {
-          tokenSeparators: [","]
-        }
-      }
-    },
-    selecttree: {
-      label: "Color (tree)",
-      type: "treeselect",
-      fieldSettings: {
-        treeExpandAll: true,
-        // * deep format (will be auto converted to flat format):
-        // treeValues: [
-        //     { value: "1", title: "Warm colors", children: [
-        //         { value: "2", title: "Red" },
-        //         { value: "3", title: "Orange" }
-        //     ] },
-        //     { value: "4", title: "Cool colors", children: [
-        //         { value: "5", title: "Green" },
-        //         { value: "6", title: "Blue", children: [
-        //             { value: "7", title: "Sub blue", children: [
-        //                 { value: "8", title: "Sub sub blue and a long text" }
-        //             ] }
-        //         ] }
-        //     ] }
-        // ],
-        // * flat format:
-        treeValues: [
-          { value: "1", title: "Warm colors" },
-          { value: "2", title: "Red", parent: "1" },
-          { value: "3", title: "Orange", parent: "1" },
-          { value: "4", title: "Cool colors" },
-          { value: "5", title: "Green", parent: "4" },
-          { value: "6", title: "Blue", parent: "4" },
-          { value: "7", title: "Sub blue", parent: "6" },
-          { value: "8", title: "Sub sub blue and a long text", parent: "7" },
-        ],
-      }
-    },
-    multiselecttree: {
-      label: "Colors (tree)",
-      type: "treemultiselect",
-      fieldSettings: {
-        treeExpandAll: true,
-        treeValues: [
-          {
-            value: "1", title: "Warm colors", children: [
-              { value: "2", title: "Red" },
-              { value: "3", title: "Orange" }
-            ]
-          },
-          {
-            value: "4", title: "Cool colors", children: [
-              { value: "5", title: "Green" },
-              {
-                value: "6", title: "Blue", children: [
-                  {
-                    value: "7", title: "Sub blue", children: [
-                      { value: "8", title: "Sub sub blue and a long text" }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    },
-    autocomplete: {
-      label: "Autocomplete",
-      type: "select",
-      valueSources: ["value"],
-      fieldSettings: {
-        asyncFetch: simulatedAsyncFetch,
-        useAsyncSearch: true,
-        fetchSelectedValuesOnInit: true,
-        useLoadMore: true,
-        forceAsyncSearch: false,
-        allowCustomValues: false
-      } as SelectFieldSettings,
-    },
-    autocompleteMultiple: {
-      label: "AutocompleteMultiple",
-      type: "multiselect",
-      valueSources: ["value"],
-      fieldSettings: {
-        asyncFetch: simulatedAsyncFetch,
-        useAsyncSearch: true,
-        fetchSelectedValuesOnInit: true,
-        useLoadMore: true,
-        forceAsyncSearch: false,
-        allowCustomValues: false
-      } as SelectFieldSettings,
-    },
-    stock: {
-      label: "In stock",
-      type: "boolean",
-      defaultValue: true,
-      mainWidgetProps: {
-        labelYes: "+",
-        labelNo: "-"
-      }
-    },
-  };
+    },  
+};
 
   //////////////////////////////////////////////////////////////////////
 
   const funcs: Funcs = {
     //...BasicFuncs
-
+    math: {
+      type: "!struct",
+      label: "Math",
+      tooltip: "Mathematical functions",
+      subfields: {
+          ADD: {
+            label: 'ADD',
+            returnType: 'number',
+            args: [
+              { name: 'a', type: 'number' },
+              { name: 'b', type: 'number' }
+            ],
+            renderBrackets: ['(', ')'],
+            renderOperator: '+',
+            sqlFunc: (args) => `(${args[0]} + ${args[1]})`,
+            mongoFunc: (args) => ({ $add: [args[0], args[1]] }),
+          },
+          SUBTRACT: {
+            label: 'SUBTRACT',
+            returnType: 'number',
+            args: [
+              { name: 'a', type: 'number' },
+              { name: 'b', type: 'number' }
+            ],
+            renderBrackets: ['(', ')'],
+            renderOperator: '-',
+            sqlFunc: (args) => `(${args[0]} - ${args[1]})`,
+            mongoFunc: (args) => ({ $subtract: [args[0], args[1]] }),
+          },
+      }
+    },
     string: {
       type: "!struct",
       label: "String",
       tooltip: "String functions",
       subfields: {
-        MID: {
+        LEN: {
           args: {
-            str: {
+            string: {
               label: "String",
               type: "text",
-              valueSources: ["value"]
+              valueSources: ["field", "value", "func"]
+            }
+          },
+          returnType: "number"
+        },        MID: {
+          args: {
+            string: {
+              label: "String",
+              type: "text",
+              valueSources: ["field", "value", "func"]
             },
             start: {
               label: "Start",
               type: "number",
-              valueSources: ["value"]
+              valueSources: ["field", "value", "func"]
             },
             len: {
-              type: "Len",
-              valueSources: ["value"]
+              label: "Length",
+              type: "Length",
+              valueSources: ["field", "value", "func"]
             }
           },
-          returnType: "string"
+          returnType: "text"
         },
-
-        // LOWER: max length - 7
-        // UPPER: max length - 6
-        LOWER: merge({}, BasicFuncs.LOWER, {
-          tooltip: "Convert to lower case",
-          allowSelfNesting: true,
-          validateValue: (s: string) => {
-            return s.length <= 7 ? null : {
-              error: "bad len",
-              fixedValue: s.substring(0, 7)
-            };
-          },
+        TEXT: {
           args: {
-            str: {
-              validateValue: (s: string) => {
-                return s.length <= 7 ? null : {
-                  error: { key: "custom:BAD_LEN", args: {val: s} },
-                  fixedValue: s.substring(0, 7)
-                };
-              }
+            value: {
+              label: "Value",
+              type: "text",
+              valueSources: ["field", "value", "func"]
             },
-          }
-        }),
-        UPPER: merge({}, BasicFuncs.UPPER, {
-          tooltip: "Convert to upper case",
-          allowSelfNesting: true,
-          validateValue: (s: string) => {
-            return s.length <= 6 ? null : {
-              error: "bad len",
-              fixedValue: s.substring(0, 6)
-            };
-          },
-          args: {
-            str: {
-              validateValue: (s: string) => {
-                return s.length <= 6 ? null : {
-                  error: { key: "custom:BAD_LEN", args: {val: s} },
-                  fixedValue: s.substring(0, 6)
-                };
-              }
+            format: {
+              label: "Format",
+              type: "text",
+              valueSources: ["field", "value", "func"]
             },
-          }
-        }),
-      }
-    },
-    date: {
-      type: "!struct",
-      label: "Date",
-      subfields: {
-        NOW: BasicFuncs.NOW,
-        RELATIVE_DATETIME: merge({}, BasicFuncs.RELATIVE_DATETIME, {
-          args: {
-            date: {
-              defaultValue: {func: "date.NOW", args: []},
+            len: {
+              label: "Length",
+              type: "Length",
+              valueSources: ["field", "value", "func"]
             }
-          }
-        }),
-      }
-    },
-    number: {
-      type: "!struct",
-      label: "Number",
-      subfields: {
-        LINEAR_REGRESSION: BasicFuncs.LINEAR_REGRESSION,
+          },
+          returnType: "text"
+        }
       }
     }
   };
