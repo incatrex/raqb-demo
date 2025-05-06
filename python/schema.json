@@ -78,7 +78,7 @@
         },
         "properties": {
           "type": "object",
-          "required": ["field", "operator"],
+          "required": ["field", "fieldSrc", "operator"],
           "allOf": [
             {
               "if": {
@@ -100,8 +100,27 @@
           ],
           "properties": {
             "field": {
-              "type": "string",
-              "description": "Field/column name to apply the operator on"
+              "description" : "Field = Left hand side of condition",
+              "oneOf": [
+                {
+                  "type": "string",
+                  "description": "Field name as a simple string"
+                },
+                {
+                  "type": "object",
+                  "description": "Field as an object with function and args",
+                  "required": ["func"],
+                  "properties": {
+                    "func": {
+                      "type": "string"
+                    },
+                    "args": {
+                      "type": "object"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              ]
             },
             "operator": {
               "type": "string",
@@ -127,7 +146,7 @@
               ]
             },
             "value": {
-              "description": "Value or values to compare against",
+              "description": "Value = Right hand side of expression (value(s) to compare against)",
               "oneOf": [
                 { "type": "string" },
                 { "type": "number" },
@@ -182,7 +201,7 @@
                 }
               ]
             },
-            "funcName": {
+            "func": {
               "type": "string",
               "description": "Function name for function-based operations",
               "enum": ["RULE_NAME", "RULE_REF", "$", "MID", "LEN", "TEXT", "SUM"]

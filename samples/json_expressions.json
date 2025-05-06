@@ -11,313 +11,325 @@
         "id": "scenario1",
         "type": "rule",
         "properties": {
-          "field": "RAMP.rule",
+          "field": {
+            "func": "RAMP.rule.RULE_NAME",
+            "args": {
+              "ruleId": {
+                "value": "RULES.NUMBER_RULE_01",
+                "valueType": "text"
+              },
+              "returnType": {
+                "value": "number",
+                "valueType": "text"
+              }
+            }
+          },
           "fieldSrc": "func",
           "operator": "equal",
           "value": "RULES.NUMBER_RULE_01",
           "valueType": "number",
-          "valueSrc": "func",
-          "funcName": "RULE_NAME",
-          "args": {
-            "ruleId": {
-              "value": "RULES.NUMBER_RULE_01",
-              "valueType": "text"
-            },
-            "returnType": {
-              "value": "number",
-              "valueType": "text"
-            }
-          }
+          "valueSrc": "func"
         }
       },
       {
         "id": "scenario2",
         "type": "rule",
         "properties": {
-          "field": "RAMP.rule",
+          "field": {
+            "func": "RAMP.rule.RULE_NAME",
+            "args": {
+              "ruleId": {
+                "value": "RULES.BOOLEAN_RULE_01",
+                "valueType": "text"
+              },
+              "returnType": {
+                "value": "boolean",
+                "valueType": "text"
+              }
+            }
+          },
           "fieldSrc": "func",
           "operator": "equal",
           "value": true,
           "valueType": "boolean",
-          "valueSrc": "value",
-          "funcName": "RULE_NAME",
-          "args": {
-            "ruleId": {
-              "value": "RULES.BOOLEAN_RULE_01",
-              "valueType": "text"
-            },
-            "returnType": {
-              "value": "boolean",
-              "valueType": "text"
-            }
-          }
+          "valueSrc": "value"
         }
       },
       {
         "id": "scenario3",
         "type": "rule",
         "properties": {
-          "field": "Rule.Functions",
+          "field": {
+            "func": "Rule.Functions.RULE_REF",
+            "args": {
+              "ruleId": {
+                "value": "RULES.NUMBER_RULE_01",
+                "valueType": "text"
+              },
+              "returnType": {
+                "value": "number",
+                "valueType": "text"
+              }
+            }
+          },
           "fieldSrc": "func",
           "operator": "equal",
           "value": 100,
           "valueType": "number",
-          "valueSrc": "value",
-          "funcName": "RULE_REF",
-          "args": {
-            "ruleId": {
-              "value": "RULES.NUMBER_RULE_01",
-              "valueType": "text"
-            },
-            "returnType": {
-              "value": "number",
-              "valueType": "text"
-            }
-          }
+          "valueSrc": "value"
         }
       },
       {
         "id": "scenario4",
         "type": "rule",
         "properties": {
-          "field": "Rule.Functions",
+          "field": {
+            "func": "Rule.Functions.RULE_REF",
+            "args": {
+              "ruleId": {
+                "value": "RULES.BOOLEAN_RULE_01",
+                "valueType": "text"
+              },
+              "returnType": {
+                "value": "boolean",
+                "valueType": "text"
+              }
+            }
+          },
           "fieldSrc": "func",
           "operator": "equal",
           "value": true,
           "valueType": "boolean",
-          "valueSrc": "value",
-          "funcName": "RULE_REF",
-          "args": {
-            "ruleId": {
-              "value": "RULES.BOOLEAN_RULE_01",
-              "valueType": "text"
-            },
-            "returnType": {
-              "value": "boolean",
-              "valueType": "text"
-            }
-          }
+          "valueSrc": "value"
         }
       },
       {
         "id": "scenario5",
         "type": "rule",
         "properties": {
-          "field": "Rule.Functions",
+          "field": {
+            "func": "Rule.Functions.$",
+            "args": {
+              "variableName": {
+                "value": "NUMBER_VARIABLE_A",
+                "valueType": "text"
+              },
+              "returnType": {
+                "value": "number",
+                "valueType": "text"
+              }
+            }
+          },
           "fieldSrc": "func",
           "operator": "equal",
           "value": 100,
           "valueType": "number",
-          "valueSrc": "value",
-          "funcName": "$",
-          "args": {
-            "variableName": {
-              "value": "NUMBER_VARIABLE_A",
-              "valueType": "text"
-            },
-            "returnType": {
-              "value": "number",
-              "valueType": "text"
-            }
-          }
+          "valueSrc": "value"
         }
       },
       {
         "id": "scenario6",
         "type": "rule",
         "properties": {
-          "field": "Rule.Functions",
+          "field": {
+            "func": "Rule.Functions.$",
+            "args": {
+              "variableName": {
+                "value": "BOOLEAN_VARIABLE_B",
+                "valueType": "text"
+              },
+              "returnType": {
+                "value": "boolean",
+                "valueType": "text"
+              }
+            }
+          },
           "fieldSrc": "func",
           "operator": "equal",
           "value": true,
           "valueType": "boolean",
-          "valueSrc": "value",
-          "funcName": "$",
-          "args": {
-            "variableName": {
-              "value": "BOOLEAN_VARIABLE_B",
-              "valueType": "text"
-            },
-            "returnType": {
-              "value": "boolean",
-              "valueType": "text"
-            }
-          }
+          "valueSrc": "value"
         }
       },
       {
         "id": "scenario7",
         "type": "rule",
         "properties": {
-          "field": "Excel.String",
+          "field": {
+            "func": "Excel.String.MID",
+            "args": {
+              "string": {
+                "value": "TABLE1.TEXT_FIELD_01",
+                "valueType": "text",
+                "valueSrc": "field"
+              },
+              "start": {
+                "value": 2,
+                "valueType": "number"
+              },
+              "len": {
+                "value": 5,
+                "valueType": "number"
+              }
+            }
+          },
           "fieldSrc": "func",
           "operator": "equal",
           "value": "ABCDE",
           "valueType": "text",
-          "valueSrc": "value",
-          "funcName": "MID",
-          "args": {
-            "string": {
-              "value": "TABLE1.TEXT_FIELD_01",
-              "valueType": "text",
-              "valueSrc": "field"
-            },
-            "start": {
-              "value": 2,
-              "valueType": "number"
-            },
-            "len": {
-              "value": 5,
-              "valueType": "number"
-            }
-          }
+          "valueSrc": "value"
         }
       },
       {
         "id": "scenario8",
         "type": "rule",
         "properties": {
-          "field": "Excel.String",
+          "field": {
+            "func": "Excel.String.LEN",
+            "args": {
+              "string": {
+                "value": "TABLE1.TEXT_FIELD_01",
+                "valueType": "text",
+                "valueSrc": "field"
+              }
+            }
+          },
           "fieldSrc": "func",
           "operator": "greater",
           "value": 5,
           "valueType": "number",
-          "valueSrc": "value",
-          "funcName": "LEN",
-          "args": {
-            "string": {
-              "value": "TABLE1.TEXT_FIELD_01",
-              "valueType": "text",
-              "valueSrc": "field"
-            }
-          }
+          "valueSrc": "value"
         }
       },
       {
         "id": "scenario9",
         "type": "rule",
         "properties": {
-          "field": "Excel.String",
+          "field": {
+            "func": "Excel.String.TEXT",
+            "args": {
+              "value": {
+                "value": "TABLE1.NUMBER_FIELD_01",
+                "valueType": "number",
+                "valueSrc": "field"
+              },
+              "format": {
+                "value": "$#,###.#0",
+                "valueType": "text"
+              }
+            }
+          },
           "fieldSrc": "func",
           "operator": "equal",
           "value": "#1,000.00",
           "valueType": "text",
-          "valueSrc": "value",
-          "funcName": "TEXT",
-          "args": {
-            "value": {
-              "value": "TABLE1.NUMBER_FIELD_01",
-              "valueType": "number",
-              "valueSrc": "field"
-            },
-            "format": {
-              "value": "$#,###.#0",
-              "valueType": "text"
-            }
-          }
+          "valueSrc": "value"
         }
       },
       {
         "id": "scenario10",
         "type": "rule",
         "properties": {
-          "field": "Excel.Number",
+          "field": {
+            "func": "Excel.Number.TEXT",
+            "args": {
+              "value": {
+                "value": "TABLE1.DATE_FIELD_01",
+                "valueType": "date",
+                "valueSrc": "field"
+              },
+              "format": {
+                "value": "YYYY-MM-DD",
+                "valueType": "text"
+              }
+            }
+          },
           "fieldSrc": "func",
           "operator": "equal",
           "value": "2025-05-06",
           "valueType": "text",
-          "valueSrc": "value",
-          "funcName": "TEXT",
-          "args": {
-            "value": {
-              "value": "TABLE1.DATE_FIELD_01",
-              "valueType": "date",
-              "valueSrc": "field"
-            },
-            "format": {
-              "value": "YYYY-MM-DD",
-              "valueType": "text"
-            }
-          }
+          "valueSrc": "value"
         }
       },
       {
         "id": "scenario11",
         "type": "rule",
         "properties": {
-          "field": "Excel.String",
+          "field": {
+            "func": "Excel.String.MID",
+            "args": {
+              "string": {
+                "funcName": "TEXT",
+                "args": {
+                  "value": {
+                    "value": "TABLE1.NUMBER_FIELD_01",
+                    "valueType": "number",
+                    "valueSrc": "field"
+                  },
+                  "format": {
+                    "value": "$###.#0",
+                    "valueType": "text"
+                  }
+                },
+                "valueType": "text",
+                "valueSrc": "func"
+              },
+              "start": {
+                "value": 2,
+                "valueType": "number"
+              },
+              "len": {
+                "value": 3,
+                "valueType": "number"
+              }
+            }
+          },
           "fieldSrc": "func",
           "operator": "equal",
           "value": "101",
           "valueType": "text",
-          "valueSrc": "value",
-          "funcName": "MID",
-          "args": {
-            "string": {
-              "funcName": "TEXT",
-              "args": {
-                "value": {
-                  "value": "TABLE1.NUMBER_FIELD_01",
-                  "valueType": "number",
-                  "valueSrc": "field"
-                },
-                "format": {
-                  "value": "$###.#0",
-                  "valueType": "text"
-                }
-              },
-              "valueType": "text",
-              "valueSrc": "func"
-            },
-            "start": {
-              "value": 2,
-              "valueType": "number"
-            },
-            "len": {
-              "value": 3,
-              "valueType": "number"
-            }
-          }
+          "valueSrc": "value"
         }
       },
       {
         "id": "scenario12",
         "type": "rule",
         "properties": {
-          "field": "Excel.Number",
+          "field": {
+            "func": "Excel.Number.SUM",
+            "args": {
+              "values": {
+                "value": [
+                  {
+                    "value": "TABLE1.NUMBER_FIELD_01",
+                    "valueType": "number",
+                    "valueSrc": "field"
+                  },
+                  {
+                    "value": "TABLE1.NUMBER_FIELD_02",
+                    "valueType": "number",
+                    "valueSrc": "field"
+                  },
+                  {
+                    "value": "TABLE2.NUMBER_FIELD_01",
+                    "valueType": "number",
+                    "valueSrc": "field"
+                  },
+                  {
+                    "value": "TABLE2.NUMBER_FIELD_02",
+                    "valueType": "number",
+                    "valueSrc": "field"
+                  }
+                ],
+                "valueType": "multivalue"
+              }
+            }
+          },
           "fieldSrc": "func",
           "operator": "greater",
           "value": 0,
           "valueType": "number",
-          "valueSrc": "value",
-          "funcName": "SUM",
-          "args": {
-            "values": {
-              "value": [
-                {
-                  "value": "TABLE1.NUMBER_FIELD_01",
-                  "valueType": "number",
-                  "valueSrc": "field"
-                },
-                {
-                  "value": "TABLE1.NUMBER_FIELD_02",
-                  "valueType": "number",
-                  "valueSrc": "field"
-                },
-                {
-                  "value": "TABLE2.NUMBER_FIELD_01",
-                  "valueType": "number",
-                  "valueSrc": "field"
-                },
-                {
-                  "value": "TABLE2.NUMBER_FIELD_02",
-                  "valueType": "number",
-                  "valueSrc": "field"
-                }
-              ],
-              "valueType": "multivalue"
-            }
-          }
+          "valueSrc": "value"
         }
       },
       {

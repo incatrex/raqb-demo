@@ -11,6 +11,7 @@
         "type": "rule",
         "properties": {
           "field": "TABLE1.BOOLEAN_FIELD_01",
+          "fieldSrc": "field",
           "operator": "none"
         }
       },
@@ -19,6 +20,7 @@
         "type": "rule",
         "properties": {
           "field": "TABLE1.BOOLEAN_FIELD_02",
+          "fieldSrc": "field",
           "operator": "none"
         }
       },
@@ -27,6 +29,7 @@
         "type": "rule",
         "properties": {
           "field": "TABLE1.BOOLEAN_FIELD_03",
+          "fieldSrc": "field",
           "operator": "none"
 
         }
