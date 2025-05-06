@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Query Builder Tree to SQL Expression",
-  "description": "Schema for validating tree JSON produced by react-awesome-query-builder",
+  "description": "Schema for validating tree JSON produced by react-awesome-query-builder with SQL generation in mind",
   "oneOf": [
     {
       "$ref": "#/$defs/queryNode"
@@ -11,7 +11,7 @@
       "items": {
         "$ref": "#/$defs/queryNode"
       },
-      "description": "Array of query nodes"
+      "description": "Array of rule expressions"
     }
   ],
   "$defs": {
@@ -78,7 +78,26 @@
         },
         "properties": {
           "type": "object",
-          "required": ["field", "operator", "value"],
+          "required": ["field", "operator"],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "operator": { "enum": ["none"] }
+                }
+              },
+              "then": {
+                "properties": {
+                  "value": {
+                    "description": "Value is optional when operator is 'none'"
+                  }
+                }
+              },
+              "else": {
+                "required": ["value"]
+              }
+            }
+          ],
           "properties": {
             "field": {
               "type": "string",
@@ -103,7 +122,8 @@
                 "is_null",
                 "is_not_null",
                 "is_empty",
-                "is_not_empty"
+                "is_not_empty",
+                "none"
               ]
             },
             "value": {

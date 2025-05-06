@@ -1,0 +1,35 @@
+{
+    "id": "scenario53",
+    "type": "group",
+    "properties": {
+      "conjunction": "OR",
+      "not": false
+    },
+    "children1": [
+      {
+        "id": "scenario53_rule1",
+        "type": "rule",
+        "properties": {
+          "field": "TABLE1.BOOLEAN_FIELD_01",
+          "operator": "none"
+        }
+      },
+      {
+        "id": "scenario53_rule2",
+        "type": "rule",
+        "properties": {
+          "field": "TABLE1.BOOLEAN_FIELD_02",
+          "operator": "none"
+        }
+      },
+      {
+        "id": "scenario53_rule3",
+        "type": "rule",
+        "properties": {
+          "field": "TABLE1.BOOLEAN_FIELD_03",
+          "operator": "none"
+
+        }
+      }
+    ]
+  }
