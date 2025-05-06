@@ -112,7 +112,17 @@
                   "required": ["func"],
                   "properties": {
                     "func": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Function name for function-based operations",
+                      "enum": [
+                        "Rule.Functions.RULE_NAME", 
+                        "Rule.Functions.RULE_REF", 
+                        "Rule.Functions.$", 
+                        "Excel.String.MID", 
+                        "Excel.String.LEN", 
+                        "Excel.String.TEXT", 
+                        "Excel.Number.SUM"
+                      ]
                     },
                     "args": {
                       "type": "object"
@@ -200,11 +210,6 @@
                   "description": "Sources of multiple values"
                 }
               ]
-            },
-            "func": {
-              "type": "string",
-              "description": "Function name for function-based operations",
-              "enum": ["RULE_NAME", "RULE_REF", "$", "MID", "LEN", "TEXT", "SUM"]
             },
             "valueError": {
               "type": ["string", "array", "null"],

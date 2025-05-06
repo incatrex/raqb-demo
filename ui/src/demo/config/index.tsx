@@ -516,20 +516,20 @@ export default (skin: string) => {
 
   const funcs: Funcs = {
 
-    RAMP: {
+    "Rules.Functions": {
       type: "!struct",
-      label: "RAMP",
-      tooltip: "RAMP Specific Functions",
+      label: "Rules.Functions",
+      tooltip: "Rule Specific Functions",
       subfields: {
-        rule: {
-          label: "RULE",
+        RULE_REF: {
+          label: "RULE_REF",
           returnType: "text",
           jsonLogic: "***RULE***",
-          spelFunc: "RULE",
+          spelFunc: "RULE_REF",
           spelFormatFunc: spelFormatRule,
           args: {
             value: {
-              label: "RuleIDs",
+              label: "Rule Names",
               type: "treeselect",
               preferWidgets: ["treeselect"],
               valueSources: ["value"],
@@ -565,8 +565,27 @@ export default (skin: string) => {
             
             }
           }
+        },
+
+        "$": {
+          label: "$",
+          args: {
+            variableName: {
+              label: "Variable Name",
+              type: "text",
+              valueSources: ["field", "value"]
+            },
+            variableType: {
+              label: "Type",
+              type: "text",
+              valueSources: ["value"]
+            }
+          },
+          returnType: "text"
         }
-      }
+  
+      },
+
     },
 
     //...BasicFuncs
@@ -615,7 +634,8 @@ export default (skin: string) => {
             }
           },
           returnType: "number"
-        },        MID: {
+        },        
+        MID: {
           args: {
             string: {
               label: "String",

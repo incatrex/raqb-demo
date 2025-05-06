@@ -12,7 +12,7 @@
         "type": "rule",
         "properties": {
           "field": {
-            "func": "RAMP.rule.RULE_NAME",
+            "func": "Rule.Functions.RULE_NAME",
             "args": {
               "ruleId": {
                 "value": "RULES.NUMBER_RULE_01",
@@ -36,7 +36,7 @@
         "type": "rule",
         "properties": {
           "field": {
-            "func": "RAMP.rule.RULE_NAME",
+            "func": "Rule.Functions.RULE_NAME",
             "args": {
               "ruleId": {
                 "value": "RULES.BOOLEAN_RULE_01",
@@ -231,7 +231,7 @@
         "type": "rule",
         "properties": {
           "field": {
-            "func": "Excel.Number.TEXT",
+            "func": "Excel.String.TEXT",
             "args": {
               "value": {
                 "value": "TABLE1.DATE_FIELD_01",
