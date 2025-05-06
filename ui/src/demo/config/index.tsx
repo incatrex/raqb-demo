@@ -20,6 +20,7 @@ import { ruRU } from "@material-ui/core/locale";
 import { ruRU as muiRuRU } from "@mui/material/locale";
 import { AntdWidgets } from "@react-awesome-query-builder/antd";
 import { skinToConfig } from "../../skins";
+import { isEqual } from "lodash";
 
 const {
   FieldSelect,
@@ -28,7 +29,6 @@ const {
   FieldTreeSelect,
 } = AntdWidgets;
 const { simulateAsyncFetch } = Utils.Autocomplete;
-
 
 export default (skin: string) => {
   const originalConfig = skinToConfig[skin] as BasicConfig;
@@ -53,6 +53,13 @@ export default (skin: string) => {
 
   const conjunctions: Conjunctions = {
     ...InitialConfig.conjunctions,
+    plus: {
+      label: "+",
+      formatConj: (children, _conj, not) => ( (not ? "NOT " : "") + children.join(" + ") + ")" ),
+      reversedConj: "MINUS",
+      sqlFormatConj: (children, _conj, not) => ( (not ? "NOT " : "") + children.join(" + ") + ")" ),
+      mongoConj: "$plus"
+    }
   };
 
   const operators: Operators = 
@@ -65,6 +72,15 @@ export default (skin: string) => {
       cardinality: 1,
       formatOp: (field, op, value) => `(${field} + ${value})`,
       sqlFormatOp: (field, op, value) => `(${field} + ${value[0]})`,
+      mongoFormatOp: (field, op, value) => ({ $add: [field, value[0]] }),
+    },
+    none: {
+      label: 'NONE',
+      labelForFormat: '',
+      valueSources: ['value', 'field'],
+      cardinality: 1,
+      formatOp: (field, op, value) => `(${field})`,
+      sqlFormatOp: (field, op, value) => `(${field})`,
       mongoFormatOp: (field, op, value) => ({ $add: [field, value[0]] }),
     }
   };
@@ -132,11 +148,31 @@ export default (skin: string) => {
 
   const types = {
     ...InitialConfig.types,
+    boolean: {
+      ...InitialConfig.types.boolean,
+      operators: [
+        'isEqual',
+        'not_equal',
+        'is_null',
+        'is_empty',
+        'none'
+      ]
+    },
     number: {
       ...InitialConfig.types.number,
       operators: [
-        ...(InitialConfig.types.number.operators || []),
-        'plus',
+        'equal',
+        'not_equal',
+        'less',
+        'less_or_equal',
+        'greater',
+        'greater_or_equal',
+        'between',
+        'not_between',
+        'is_null',
+        'is_not_null',
+        'plus', // custom operator
+        'none'  // custom operator
       ]
     }
   };
@@ -474,7 +510,65 @@ export default (skin: string) => {
 
   //////////////////////////////////////////////////////////////////////
 
+  const spelFormatRule: SpelFormatFunc = (meta) => {
+    return 'RULE(%{meta.value}")';
+  };
+
   const funcs: Funcs = {
+
+    RAMP: {
+      type: "!struct",
+      label: "RAMP",
+      tooltip: "RAMP Specific Functions",
+      subfields: {
+        rule: {
+          label: "RULE",
+          returnType: "text",
+          jsonLogic: "***RULE***",
+          spelFunc: "RULE",
+          spelFormatFunc: spelFormatRule,
+          args: {
+            value: {
+              label: "RuleIDs",
+              type: "treeselect",
+              preferWidgets: ["treeselect"],
+              valueSources: ["value"],
+              fieldSettings: {
+                treeExpandAll:true,
+                treeValues: [
+                  { value: "REPORT_01", title: "REPORT_01", children: [
+                      {
+                        value: "SCHEDULE_01", title: "SCHEDULE_01", children: [
+                          { value: "RULE_01", title: "RULE1_01"},
+                          { value: "RULE_02", title: "RULE1_02"}
+                        ]
+                      },
+                      {
+                        value: "SCHEDULE_02", title: "SCHEDULE_02", children: [
+                          { value: "RULE_01", title: "RULE1_01"},
+                          { value: "RULE_02", title: "RULE1_02"}
+                        ]
+                      }
+                    ]
+                  },
+                  { value: "REPORT_02", title: "REPORT_02", children: [
+                      {
+                        value: "SCHEDULE_02", title: "SCHEDULE_02", children: [
+                          { value: "RULE_01", title: "RULE1_01"},
+                          { value: "RULE_02", title: "RULE1_02"}
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            
+            }
+          }
+        }
+      }
+    },
+
     //...BasicFuncs
     math: {
       type: "!struct",

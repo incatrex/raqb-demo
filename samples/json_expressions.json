@@ -1,0 +1,457 @@
+[
+  {
+    "id": "root",
+    "type": "group",
+    "properties": {
+      "conjunction": "AND",
+      "not": false
+    },
+    "children1": [
+      {
+        "id": "scenario1",
+        "type": "rule",
+        "properties": {
+          "field": "RAMP.rule",
+          "operator": "equal",
+          "value": "RULES.NUMBER_RULE_01",
+          "valueType": "number",
+          "valueSrc": "func",
+          "funcName": "RULE_NAME",
+          "args": {
+            "ruleId": {
+              "value": "RULES.NUMBER_RULE_01",
+              "valueType": "text"
+            },
+            "returnType": {
+              "value": "number",
+              "valueType": "text"
+            }
+          }
+        }
+      },
+      {
+        "id": "scenario2",
+        "type": "rule",
+        "properties": {
+          "field": "RAMP.rule",
+          "operator": "equal",
+          "value": true,
+          "valueType": "boolean",
+          "valueSrc": "value",
+          "funcName": "RULE_NAME",
+          "args": {
+            "ruleId": {
+              "value": "RULES.BOOLEAN_RULE_01",
+              "valueType": "text"
+            },
+            "returnType": {
+              "value": "boolean",
+              "valueType": "text"
+            }
+          }
+        }
+      },
+      {
+        "id": "scenario3",
+        "type": "rule",
+        "properties": {
+          "field": "Rule.Functions",
+          "operator": "equal",
+          "value": 100,
+          "valueType": "number",
+          "valueSrc": "value",
+          "funcName": "RULE_REF",
+          "args": {
+            "ruleId": {
+              "value": "RULES.NUMBER_RULE_01",
+              "valueType": "text"
+            },
+            "returnType": {
+              "value": "number",
+              "valueType": "text"
+            }
+          }
+        }
+      },
+      {
+        "id": "scenario4",
+        "type": "rule",
+        "properties": {
+          "field": "Rule.Functions",
+          "operator": "equal",
+          "value": true,
+          "valueType": "boolean",
+          "valueSrc": "value",
+          "funcName": "RULE_REF",
+          "args": {
+            "ruleId": {
+              "value": "RULES.BOOLEAN_RULE_01",
+              "valueType": "text"
+            },
+            "returnType": {
+              "value": "boolean",
+              "valueType": "text"
+            }
+          }
+        }
+      },
+      {
+        "id": "scenario5",
+        "type": "rule",
+        "properties": {
+          "field": "Rule.Functions",
+          "operator": "equal",
+          "value": 100,
+          "valueType": "number",
+          "valueSrc": "value",
+          "funcName": "$",
+          "args": {
+            "variableName": {
+              "value": "NUMBER_VARIABLE_A",
+              "valueType": "text"
+            },
+            "returnType": {
+              "value": "number",
+              "valueType": "text"
+            }
+          }
+        }
+      },
+      {
+        "id": "scenario6",
+        "type": "rule",
+        "properties": {
+          "field": "Rule.Functions",
+          "operator": "equal",
+          "value": true,
+          "valueType": "boolean",
+          "valueSrc": "value",
+          "funcName": "$",
+          "args": {
+            "variableName": {
+              "value": "BOOLEAN_VARIABLE_B",
+              "valueType": "text"
+            },
+            "returnType": {
+              "value": "boolean",
+              "valueType": "text"
+            }
+          }
+        }
+      },
+      {
+        "id": "scenario7",
+        "type": "rule",
+        "properties": {
+          "field": "Excel.String",
+          "operator": "equal",
+          "value": "ABCDE",
+          "valueType": "text",
+          "valueSrc": "value",
+          "funcName": "MID",
+          "args": {
+            "string": {
+              "value": "TABLE1.TEXT_FIELD_01",
+              "valueType": "text",
+              "valueSrc": "field"
+            },
+            "start": {
+              "value": 2,
+              "valueType": "number"
+            },
+            "len": {
+              "value": 5,
+              "valueType": "number"
+            }
+          }
+        }
+      },
+      {
+        "id": "scenario8",
+        "type": "rule",
+        "properties": {
+          "field": "Excel.String",
+          "operator": "greater",
+          "value": 5,
+          "valueType": "number",
+          "valueSrc": "value",
+          "funcName": "LEN",
+          "args": {
+            "string": {
+              "value": "TABLE1.TEXT_FIELD_01",
+              "valueType": "text",
+              "valueSrc": "field"
+            }
+          }
+        }
+      },
+      {
+        "id": "scenario9",
+        "type": "rule",
+        "properties": {
+          "field": "Excel.String",
+          "operator": "equal",
+          "value": "#1,000.00",
+          "valueType": "text",
+          "valueSrc": "value",
+          "funcName": "TEXT",
+          "args": {
+            "value": {
+              "value": "TABLE1.NUMBER_FIELD_01",
+              "valueType": "number",
+              "valueSrc": "field"
+            },
+            "format": {
+              "value": "$#,###.#0",
+              "valueType": "text"
+            }
+          }
+        }
+      },
+      {
+        "id": "scenario10",
+        "type": "rule",
+        "properties": {
+          "field": "Excel.Number",
+          "operator": "equal",
+          "value": "2025-05-06",
+          "valueType": "text",
+          "valueSrc": "value",
+          "funcName": "TEXT",
+          "args": {
+            "value": {
+              "value": "TABLE1.DATE_FIELD_01",
+              "valueType": "date",
+              "valueSrc": "field"
+            },
+            "format": {
+              "value": "YYYY-MM-DD",
+              "valueType": "text"
+            }
+          }
+        }
+      },
+      {
+        "id": "scenario11",
+        "type": "rule",
+        "properties": {
+          "field": "Excel.String",
+          "operator": "equal",
+          "value": "101",
+          "valueType": "text",
+          "valueSrc": "value",
+          "funcName": "MID",
+          "args": {
+            "string": {
+              "funcName": "TEXT",
+              "args": {
+                "value": {
+                  "value": "TABLE1.NUMBER_FIELD_01",
+                  "valueType": "number",
+                  "valueSrc": "field"
+                },
+                "format": {
+                  "value": "$###.#0",
+                  "valueType": "text"
+                }
+              },
+              "valueType": "text",
+              "valueSrc": "func"
+            },
+            "start": {
+              "value": 2,
+              "valueType": "number"
+            },
+            "len": {
+              "value": 3,
+              "valueType": "number"
+            }
+          }
+        }
+      },
+      {
+        "id": "scenario12",
+        "type": "rule",
+        "properties": {
+          "field": "Excel.Number",
+          "operator": "greater",
+          "value": 0,
+          "valueType": "number",
+          "valueSrc": "value",
+          "funcName": "SUM",
+          "args": {
+            "values": {
+              "value": [
+                {
+                  "value": "TABLE1.NUMBER_FIELD_01",
+                  "valueType": "number",
+                  "valueSrc": "field"
+                },
+                {
+                  "value": "TABLE1.NUMBER_FIELD_02",
+                  "valueType": "number",
+                  "valueSrc": "field"
+                },
+                {
+                  "value": "TABLE2.NUMBER_FIELD_01",
+                  "valueType": "number",
+                  "valueSrc": "field"
+                },
+                {
+                  "value": "TABLE2.NUMBER_FIELD_02",
+                  "valueType": "number",
+                  "valueSrc": "field"
+                }
+              ],
+              "valueType": "multivalue"
+            }
+          }
+        }
+      },
+      {
+        "id": "scenario13",
+        "type": "rule",
+        "properties": {
+          "field": "TABLE1.NUMBER_FIELD_01",
+          "operator": "equal",
+          "value": {
+            "value": "TABLE2.NUMBER_FIELD_02",
+            "valueType": "number",
+            "valueSrc": "field"
+          },
+          "valueType": "number",
+          "not": true
+        }
+      },
+      {
+        "id": "scenario14",
+        "type": "rule",
+        "properties": {
+          "field": "TABLE1.NUMBER_FIELD_01",
+          "operator": "not_equal",
+          "value": {
+            "value": "TABLE2.NUMBER_FIELD_02",
+            "valueType": "number",
+            "valueSrc": "field"
+          },
+          "valueType": "number"
+        }
+      },
+      {
+        "id": "scenario15",
+        "type": "rule",
+        "properties": {
+          "field": "TABLE1.NUMBER_FIELD_01",
+          "operator": "less",
+          "value": {
+            "value": "TABLE2.NUMBER_FIELD_02",
+            "valueType": "number",
+            "valueSrc": "field"
+          },
+          "valueType": "number",
+          "not": true
+        }
+      },
+      {
+        "id": "scenario16",
+        "type": "rule",
+        "properties": {
+          "field": "TABLE1.NUMBER_FIELD_01",
+          "operator": "less_or_equal",
+          "value": {
+            "value": "TABLE2.NUMBER_FIELD_02",
+            "valueType": "number",
+            "valueSrc": "field"
+          },
+          "valueType": "number"
+        }
+      },
+      {
+        "id": "scenario53",
+        "type": "group",
+        "properties": {
+          "conjunction": "OR",
+          "not": false
+        },
+        "children1": [
+          {
+            "id": "scenario53_rule1",
+            "type": "rule",
+            "properties": {
+              "field": "TABLE1.NUMBER_FIELD_01",
+              "operator": "greater_or_equal",
+              "value": 0,
+              "valueType": "number",
+              "valueSrc": "value"
+            }
+          },
+          {
+            "id": "scenario53_rule2",
+            "type": "rule",
+            "properties": {
+              "field": "TABLE1.NUMBER_FIELD_02",
+              "operator": "greater_or_equal",
+              "value": 0,
+              "valueType": "number",
+              "valueSrc": "value"
+            }
+          },
+          {
+            "id": "scenario53_rule3",
+            "type": "rule",
+            "properties": {
+              "field": "TABLE1.NUMBER_FIELD_03",
+              "operator": "greater_or_equal",
+              "value": 0,
+              "valueType": "number",
+              "valueSrc": "value"
+            }
+          }
+        ]
+      },
+      {
+        "id": "scenario54",
+        "type": "group",
+        "properties": {
+          "conjunction": "AND",
+          "not": false
+        },
+        "children1": [
+          {
+            "id": "scenario54_rule1",
+            "type": "rule",
+            "properties": {
+              "field": "TABLE1.NUMBER_FIELD_01",
+              "operator": "greater_or_equal",
+              "value": 0,
+              "valueType": "number",
+              "valueSrc": "value"
+            }
+          },
+          {
+            "id": "scenario54_rule2",
+            "type": "rule",
+            "properties": {
+              "field": "TABLE1.NUMBER_FIELD_02",
+              "operator": "greater_or_equal",
+              "value": 0,
+              "valueType": "number",
+              "valueSrc": "value"
+            }
+          },
+          {
+            "id": "scenario54_rule3",
+            "type": "rule",
+            "properties": {
+              "field": "TABLE1.NUMBER_FIELD_03",
+              "operator": "greater_or_equal",
+              "value": 0,
+              "valueType": "number",
+              "valueSrc": "value"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

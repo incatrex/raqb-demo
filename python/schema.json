@@ -1,8 +1,19 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Query Builder Tree to SQL Expression",
-  "description": "Schema for validating tree JSON produced by react-awesome-query-builder with SQL generation in mind",
-  "$ref": "#/$defs/queryNode",
+  "description": "Schema for validating tree JSON produced by react-awesome-query-builder",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/queryNode"
+    },
+    {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/queryNode"
+      },
+      "description": "Array of query nodes"
+    }
+  ],
   "$defs": {
     "queryNode": {
       "type": "object",
@@ -92,16 +103,7 @@
                 "is_null",
                 "is_not_null",
                 "is_empty",
-                "is_not_empty",
-                "in",
-                "not_in",
-                "select_equals",
-                "select_not_equals",
-                "select_any_in",
-                "select_not_any_in",
-                "multiselect_equals",
-                "multiselect_not_equals",
-                "proximity"
+                "is_not_empty"
               ]
             },
             "value": {
@@ -131,13 +133,13 @@
                 {
                   "type": "string",
                   "description": "Type of the value",
-                  "enum": ["string", "number", "boolean", "date", "time", "datetime", "select", "multiselect", "treeselect", "treemultiselect", "case_value"]
+                  "enum": ["text", "number", "boolean", "date", "time", "datetime"]
                 },
                 {
                   "type": "array",
                   "items": {
                     "type": "string",
-                    "enum": ["string", "number", "boolean", "date", "time", "datetime", "select", "multiselect", "treeselect", "treemultiselect", "case_value"]
+                    "enum": ["text", "number", "boolean", "date", "time", "datetime"]
                   },
                   "description": "Types of multiple values"
                 }
@@ -159,6 +161,11 @@
                   "description": "Sources of multiple values"
                 }
               ]
+            },
+            "funcName": {
+              "type": "string",
+              "description": "Function name for function-based operations",
+              "enum": ["RULE_NAME", "RULE_REF", "$", "MID", "LEN", "TEXT", "SUM"]
             },
             "valueError": {
               "type": ["string", "array", "null"],
@@ -209,7 +216,7 @@
       "description": "Mapping from query builder value types to SQL data types",
       "type": "object",
       "properties": {
-        "string": { "const": "string" },
+        "text": { "const": "string" },
         "number": { "const": "number" },
         "boolean": { "const": "boolean" },
         "date": { "const": "date" },
