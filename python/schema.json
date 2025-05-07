@@ -106,30 +106,7 @@
                   "type": "string",
                   "description": "Field name as a simple string"
                 },
-                {
-                  "type": "object",
-                  "description": "Field as an object with function and args",
-                  "required": ["func"],
-                  "properties": {
-                    "func": {
-                      "type": "string",
-                      "description": "Function name for function-based operations",
-                      "enum": [
-                        "Rule.Functions.RULE_NAME", 
-                        "Rule.Functions.RULE_REF", 
-                        "Rule.Functions.$", 
-                        "Excel.String.MID", 
-                        "Excel.String.LEN", 
-                        "Excel.String.TEXT", 
-                        "Excel.Number.SUM"
-                      ]
-                    },
-                    "args": {
-                      "type": "object"
-                    }
-                  },
-                  "additionalProperties": false
-                }
+                {"$ref": "#/$defs/function"}
               ]
             },
             "operator": {
@@ -161,20 +138,7 @@
                 { "type": "string" },
                 { "type": "number" },
                 { "type": "boolean" },
-                { 
-                  "type": "array",
-                  "items": {
-                    "oneOf": [
-                      { "type": "string" },
-                      { "type": "number" },
-                      { "type": "boolean" },
-                      { "type": "null" },
-                      { "type": "object" }
-                    ]
-                  }
-                },
-                { "type": "null" },
-                { "type": "object" }
+                { "$ref": "#/$defs/function" }
               ]
             },
             "valueType": {
@@ -230,47 +194,29 @@
         "required": ["children1"]
       }
     },
-    "sqlOperatorMapping": {
-      "description": "Mapping from query builder operators to SQL operators",
-      "type": "object",
-      "properties": {
-        "equal": { "const": "=" },
-        "not_equal": { "const": "!=" },
-        "less": { "const": "<" },
-        "less_or_equal": { "const": "<=" },
-        "greater": { "const": ">" },
-        "greater_or_equal": { "const": ">=" },
-        "like": { "const": "LIKE" },
-        "not_like": { "const": "NOT LIKE" },
-        "starts_with": { "const": "LIKE" },
-        "ends_with": { "const": "LIKE" },
-        "between": { "const": "BETWEEN" },
-        "not_between": { "const": "NOT BETWEEN" },
-        "is_null": { "const": "IS NULL" },
-        "is_not_null": { "const": "IS NOT NULL" },
-        "is_empty": { "const": "= ''" },
-        "is_not_empty": { "const": "!= ''" },
-        "in": { "const": "IN" },
-        "not_in": { "const": "NOT IN" },
-        "AND": { "const": "AND" },
-        "OR": { "const": "OR" }
-      }
-    },
-    "sqlDataTypeMapping": {
-      "description": "Mapping from query builder value types to SQL data types",
-      "type": "object",
-      "properties": {
-        "text": { "const": "string" },
-        "number": { "const": "number" },
-        "boolean": { "const": "boolean" },
-        "date": { "const": "date" },
-        "time": { "const": "string" },
-        "datetime": { "const": "date" },
-        "select": { "const": "string" },
-        "multiselect": { "const": "string" },
-        "treeselect": { "const": "string" },
-        "treemultiselect": { "const": "string" }
-      }
+    "function": {
+        "type": "object",
+        "description": "Field as an object with function and args",
+        "required": ["func"],
+        "properties": {
+          "func": {
+            "type": "string",
+            "description": "Function name for function-based operations",
+            "enum": [
+              "Rule.Functions.RULE_NAME", 
+              "Rule.Functions.RULE_REF", 
+              "Rule.Functions.$", 
+              "Excel.String.MID", 
+              "Excel.String.LEN", 
+              "Excel.String.TEXT", 
+              "Excel.Number.SUM"
+            ]
+          },
+          "args": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
     }
   }
 }

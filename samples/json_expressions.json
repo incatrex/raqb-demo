@@ -311,8 +311,7 @@
           "field": {
             "func": "Excel.Number.SUM",
             "args": {
-              "values": {
-                "value": [
+              "values": [
                   {
                     "value": "TABLE1.NUMBER_FIELD_01",
                     "valueType": "number",
@@ -333,9 +332,7 @@
                     "valueType": "number",
                     "valueSrc": "field"
                   }
-                ],
-                "valueType": "multivalue"
-              }
+              ]
             }
           },
           "fieldSrc": "func",
