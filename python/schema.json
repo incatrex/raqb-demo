@@ -4,18 +4,18 @@
   "description": "Schema for validating tree JSON produced by react-awesome-query-builder with SQL generation in mind",
   "oneOf": [
     {
-      "$ref": "#/$defs/queryNode"
+      "$ref": "#/$defs/ruleRootNode"
     },
     {
       "type": "array",
       "items": {
-        "$ref": "#/$defs/queryNode"
+        "$ref": "#/$defs/ruleRootNode"
       },
       "description": "Array of rule expressions"
     }
   ],
   "$defs": {
-    "queryNode": {
+    "ruleRootNode": {
       "type": "object",
       "required": ["id", "type"],
       "properties": {
@@ -34,7 +34,7 @@
           "$ref": "#/$defs/groupNode"
         },
         {
-          "$ref": "#/$defs/ruleNode"
+          "$ref": "#/$defs/expressionNode"
         }
       ]
     },
@@ -64,12 +64,12 @@
           "type": "array",
           "description": "Child nodes for group type",
           "items": {
-            "$ref": "#/$defs/queryNode"
+            "$ref": "#/$defs/ruleRootNode"
           }
         }
       }
     },
-    "ruleNode": {
+    "expressionNode": {
       "type": "object",
       "required": ["type", "properties"],
       "properties": {
