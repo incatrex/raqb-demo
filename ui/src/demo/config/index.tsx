@@ -257,7 +257,8 @@ export default (skin: string) => {
 
     valueSourcesInfo: {
       value: {
-        label: "Value"
+        label: "Value",
+        widget: "text"
       },
       field: {
         label: "Field",
@@ -268,7 +269,7 @@ export default (skin: string) => {
         widget: "func",
       }
     },
-    fieldSources: ["field", "func"],
+    fieldSources: ["field", "func", "value"],
     keepInputOnChangeFieldSrc: true,
     reverseOperatorsForNot: true,
     canShortMongoQuery: true,
@@ -524,7 +525,7 @@ export default (skin: string) => {
         RULE_REF: {
           label: "RULE_REF",
           returnType: "text",
-          jsonLogic: "***RULE***",
+          jsonLogic: "RULE_REF",
           spelFunc: "RULE_REF",
           spelFormatFunc: spelFormatRule,
           args: {
