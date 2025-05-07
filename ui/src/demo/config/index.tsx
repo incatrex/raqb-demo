@@ -529,7 +529,7 @@ export default (skin: string) => {
           spelFunc: "RULE_REF",
           spelFormatFunc: spelFormatRule,
           args: {
-            value: {
+            ruleName: {
               label: "Rule Names",
               type: "treeselect",
               preferWidgets: ["treeselect"],
@@ -564,6 +564,11 @@ export default (skin: string) => {
                 ]
               }
             
+            },
+            ruleReturnType: {
+              label: "Rule Return Type",
+              type: "text",
+              valueSources: ["value"]
             }
           }
         },

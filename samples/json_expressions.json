@@ -14,11 +14,11 @@
           "field": {
             "func": "Rule.Functions.RULE_NAME",
             "args": {
-              "ruleId": {
+              "ruleName": {
                 "value": "RULES.NUMBER_RULE_01",
                 "valueType": "text"
               },
-              "returnType": {
+              "ruleReturnType": {
                 "value": "number",
                 "valueType": "text"
               }
@@ -26,7 +26,20 @@
           },
           "fieldSrc": "func",
           "operator": "equal",
-          "value": "RULES.NUMBER_RULE_01",
+          "value":
+            {
+              "func": "Rule.Functions.RULE_NAME",
+              "args": {
+                "ruleName": {
+                  "value": "RULES.NUMBER_RULE_02",
+                  "valueType": "text"
+                },
+                "ruleReturnType": {
+                  "value": "number",
+                  "valueType": "text"
+                }
+              }
+            },
           "valueType": "number",
           "valueSrc": "func"
         }
@@ -38,11 +51,11 @@
           "field": {
             "func": "Rule.Functions.RULE_NAME",
             "args": {
-              "ruleId": {
+              "ruleName": {
                 "value": "RULES.BOOLEAN_RULE_01",
                 "valueType": "text"
               },
-              "returnType": {
+              "ruleReturnType": {
                 "value": "boolean",
                 "valueType": "text"
               }
@@ -62,11 +75,11 @@
           "field": {
             "func": "Rule.Functions.RULE_REF",
             "args": {
-              "ruleId": {
+              "ruleName": {
                 "value": "RULES.NUMBER_RULE_01",
                 "valueType": "text"
               },
-              "returnType": {
+              "ruleReturnType": {
                 "value": "number",
                 "valueType": "text"
               }
@@ -86,11 +99,11 @@
           "field": {
             "func": "Rule.Functions.RULE_REF",
             "args": {
-              "ruleId": {
+              "ruleName": {
                 "value": "RULES.BOOLEAN_RULE_01",
                 "valueType": "text"
               },
-              "returnType": {
+              "ruleReturnType": {
                 "value": "boolean",
                 "valueType": "text"
               }
@@ -114,7 +127,7 @@
                 "value": "NUMBER_VARIABLE_A",
                 "valueType": "text"
               },
-              "returnType": {
+              "ruleReturnType": {
                 "value": "number",
                 "valueType": "text"
               }
@@ -138,7 +151,7 @@
                 "value": "BOOLEAN_VARIABLE_B",
                 "valueType": "text"
               },
-              "returnType": {
+              "ruleReturnType": {
                 "value": "boolean",
                 "valueType": "text"
               }
