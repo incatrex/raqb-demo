@@ -1,0 +1,29 @@
+{
+    "id" : "0000",
+    "type" : "group",
+    "ruleName" : "RULE NAME",
+    "ruleDescription" : "Rule Description",
+    "ruleContextUuid" : "Context ID",
+    "ruleSQL" : "",
+    "attributeContexts" : [
+        {
+            "configUuid" : "xxx",
+            "contextAlias" : "ALIAS"
+        }
+    ],
+    "children1" : [
+        {
+            "type" : "rule",
+            "id" : "0000",
+            "properties" : {
+                "operator" : "is_null",
+                "filedSrc" : "field",
+                "valueType" : [],
+                "value" : [], 
+                "valueSrc" : [],
+                "valueError" : [],
+                "field" : "ALIAS.FIELD_NAME"
+            }
+        }
+    ]
+}
