@@ -17,7 +17,7 @@
             "id" : "0000",
             "properties" : {
                 "operator" : "is_null",
-                "filedSrc" : "field",
+                "fieldSrc" : "field",
                 "valueType" : [],
                 "value" : [], 
                 "valueSrc" : [],

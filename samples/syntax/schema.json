@@ -2,20 +2,102 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Query Builder Tree to SQL Expression",
   "description": "Schema for validating tree JSON produced by react-awesome-query-builder with SQL generation in mind",
+
   "oneOf": [
     {
       "$ref": "#/$defs/ruleRootNode"
     },
     {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/ruleRootNode"
+      "type": "object",
+      "properties": {
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ruleRootNode"
+          }
+        }
       },
-      "description": "Array of rule expressions"
+      "required": ["rules"],
+      "description": "Object containing array of rules"
     }
   ],
+
   "$defs": {
     "ruleRootNode": {
+      "type": "object",
+      "required": ["id", "type", "children1"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the node"
+        },
+        "type": {
+          "const": "group",
+          "description": "Type of the node must be a group"
+        },
+        "properties": {
+          "type": "object",
+          "properties": {
+            "conjunction": {
+              "type": "string",
+              "enum": ["AND", "OR"],
+              "description": "Logical operator for combining child rules"
+            },
+            "not": {
+              "type": "boolean",
+              "description": "Whether to negate the entire group"
+            }
+          }
+        },
+        "children1": {
+          "type": "array",
+          "description": "Child nodes for group type",
+          "items": {
+            "$ref": "#/$defs/childNode"
+          }
+        },
+        "ruleName": {
+          "type": "string",
+          "description": "Name of the rule"
+        },
+        "ruleDescription": {
+          "type": "string",
+          "description": "Description of the rule"
+        },
+        "ruleContextUuid": {
+          "type": "string",
+          "description": "UUID of the rule context"
+        },
+        "ruleContext": {
+          "type": "string",
+          "description": "Context of the rule"
+        },
+        "ruleSQL": {
+          "type": "string",
+          "description": "SQL representation of the rule"
+        },
+        "attributeContexts": {
+          "type": "array",
+          "description": "Array of attribute contexts",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["configUuid", "contextAlias"],
+            "properties": {
+              "configUuid": {
+                "type": "string",
+                "description": "UUID of the configuration"
+              },
+              "contextAlias": {
+                "type": "string",
+                "description": "Alias for the context"
+              }
+            }
+          }
+        }
+      }
+    },
+    "childNode": {
       "type": "object",
       "required": ["id", "type"],
       "properties": {
@@ -40,14 +122,13 @@
     },
     "groupNode": {
       "type": "object",
-      "required": ["type", "properties", "children1"],
+      "required": ["type", "children1"],
       "properties": {
         "type": {
           "const": "group"
         },
         "properties": {
           "type": "object",
-          "required": ["conjunction"],
           "properties": {
             "conjunction": {
               "type": "string",
@@ -64,7 +145,7 @@
           "type": "array",
           "description": "Child nodes for group type",
           "items": {
-            "$ref": "#/$defs/ruleRootNode"
+            "$ref": "#/$defs/childNode"
           }
         }
       }
@@ -78,18 +159,18 @@
         },
         "properties": {
           "type": "object",
-          "required": ["field", "fieldSrc", "operator"],
+          "required": ["field", "operator"],
           "allOf": [
             {
               "if": {
                 "properties": {
-                  "operator": { "enum": ["none"] }
+                  "operator": { "enum": ["none", "is_null", "is_not_null", "is_empty", "is_not_empty"] }
                 }
               },
               "then": {
                 "properties": {
                   "value": {
-                    "description": "Value is optional when operator is 'none'"
+                    "description": "Value is optional when operator is 'none' or a null/empty check"
                   }
                 }
               },
@@ -140,7 +221,8 @@
                 { "type": "number" },
                 { "type": "boolean" },
                 { "$ref": "#/$defs/function" },
-                { "$ref": "#/$defs/fieldReference" }
+                { "$ref": "#/$defs/fieldReference" },
+                { "type": "array" }
               ]
             },
             "valueType": {
@@ -150,14 +232,7 @@
                   "description": "Type of the value",
                   "enum": ["text", "number", "boolean", "date", "time", "datetime"]
                 },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "enum": ["text", "number", "boolean", "date", "time", "datetime"]
-                  },
-                  "description": "Types of multiple values"
-                }
+                { "type": "array" }
               ]
             },
             "valueSrc": {
@@ -167,18 +242,15 @@
                   "enum": ["value", "field", "func"],
                   "description": "Source of the value" 
                 },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "enum": ["value", "field", "func"]
-                  },
-                  "description": "Sources of multiple values"
-                }
+                { "type": "array" }
               ]
             },
             "valueError": {
-              "type": ["string", "array", "null"],
+              "oneOf": [
+                { "type": "string" },
+                { "type": "null" },
+                { "type": "array" }
+              ],
               "description": "Error message if value is invalid"
             },
             "operatorOptions": {
@@ -188,6 +260,10 @@
             "fieldSrc": {
               "type": "string",
               "description": "Source of the field"
+            },
+            "filedSrc": {
+              "type": "string",
+              "description": "Alternative spelling for fieldSrc (maintained for compatibility)"
             },
             "not": {
               "type": "boolean",
@@ -209,13 +285,13 @@
             "type": "string",
             "description": "Function name for function-based operations",
             "enum": [
-              "Rule.Functions.RULE_NAME", 
-              "Rule.Functions.RULE_REF", 
-              "Rule.Functions.$", 
-              "Excel.String.MID", 
-              "Excel.String.LEN", 
-              "Excel.String.TEXT", 
-              "Excel.Number.SUM"
+              "MATH.INT", 
+              "MATH.ROUND",
+              "MATH.SUM",
+              "STRING.LEN", 
+              "STRING.MID",
+              "STRING.SUM",
+              "STRING.TEXT" 
             ]
           },
           "args": {

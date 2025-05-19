@@ -1,0 +1,37 @@
+{
+    "id" : "0000",
+    "type" : "group",
+    "ruleName" : "RULE NAME",
+    "ruleDescription" : "Rule Description",
+    "ruleContextUuid" : "Context ID",
+    "ruleSQL" : "",
+    "attributeContexts" : [
+        {
+            "configUuid" : "xxx",
+            "contextAlias" : "ALIAS"
+        }
+    ],
+    "children1" : [
+        {
+            "type" : "rule",
+            "id" : "0000",
+            "properties" : {
+                "operator" : "equal",
+                "fieldSrc" : "func",
+                "valueType" : [ "number" ],
+                "value" : [ "ALIAS.NUMBER_FIELD1"], 
+                "valueSrc" : [ "field" ],
+                "valueError" : [ null ],
+                "field" : {
+                    "func" : "MATH.INT",
+                    "args" : {
+                        "number" : {
+                            "valueSrc" : "field",
+                            "value" : "ALIAS.NUMBER_FIELD1"
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

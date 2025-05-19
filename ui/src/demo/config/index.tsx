@@ -323,7 +323,30 @@ export default (skin: string) => {
 
   //////////////////////////////////////////////////////////////////////
 
+  const createVariableFields=(count = 20)  => {
+    const fields = {};
+    for (let i = 1; i <= count; i++) {
+      // Pad numbers 1-9 with a leading zero
+      const paddedNumber = i < 10 ? `0${i}` : `${i}`;
+      const fieldName = `$VAR${paddedNumber}`;
+      fields[fieldName] = {
+        label: fieldName,
+        type: "text",
+        valueSources: ["value", "field", "funct"],
+      };
+    }
+    return fields;
+  }
+
   const fields: Fields = {
+
+    "$VARIABLE": {
+      type: "!struct",
+      lable: "$VARIABLE",
+      subfields: {
+        ...createVariableFields(),
+      }
+    },
     
     // Define the table structure with field groups
     "TABLE1": {
